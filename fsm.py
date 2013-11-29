@@ -20,12 +20,16 @@ class Machine(object):
         self._accept_states = accept_states
 
 
-    def run(self, input):
+    def run(self, input, console_output=True):
         """Takes an input string, and runs it against the machine's states,
         and transitions.
 
         Args:
             input -- the input string to test.
+
+        Keyword Args:
+            console_output -- Set this to False if you do not want
+                to print to the console. (Defaults to True).
 
         Returns:
             A boolean representing if the input passes through the state machine
@@ -33,7 +37,9 @@ class Machine(object):
 
         """
         if not isinstance(input, str):
-            print RED_COLOR + "Error: input is not a string" + END_COLOR
+            if console_output:
+                print RED_COLOR + "Error: input is not a string" + END_COLOR
+
             return False
 
         current_state = self._start
@@ -62,15 +68,18 @@ class Machine(object):
             current_state = next_state
 
         if current_state in self._accept_states:
-            print GREEN_COLOR + "PASS" + END_COLOR
+            if console_output:
+                print GREEN_COLOR + "PASS" + END_COLOR
+
             return True
         else:
-            print RED_COLOR + "FAIL" + END_COLOR
-            acceptable_states_string = ''.join(self._accept_states)
-            print "Ended with state: {0} with acceptable end states: {1}".format(
-                current_state,
-                acceptable_states_string
-            )
+            if console_output:
+                print RED_COLOR + "FAIL" + END_COLOR
+                acceptable_states_string = ''.join(self._accept_states)
+                print "Ended with state: {0} with acceptable end states: {1}".format(
+                    current_state,
+                    acceptable_states_string
+                )
 
             return False
 
@@ -94,12 +103,12 @@ class Machine(object):
 
         # Make sure the start state is valid.
         assert start in states, \
-                "start state {0} is not within defined states".format(start)
+                "Start state {0} is not within defined states".format(start)
 
         # Make sure the accept states are valid.
         for accept_state in end:
             assert accept_state in states, \
-                    "accept state {0} is not within defined states".format(accept_state)
+                    "Accept state {0} is not within defined states".format(accept_state)
 
         assert isinstance(transitions, dict), "Transitions is not a dict"
 
