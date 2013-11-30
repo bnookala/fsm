@@ -9,8 +9,8 @@ class Machine(object):
         """Constructor for this state machine. Do not invoke directly, instead
         use the from_arguments classmethod ie;
 
-        machine = Machine.from_arguments(states, alphabet, transitions, start, end)
-        machine.run()
+        >>> machine = Machine.from_arguments(states, alphabet, transitions, start, end)
+        >>> machine.run()
         """
 
         self._states = states
@@ -60,7 +60,8 @@ class Machine(object):
             # Get the next state.
             next_state = transition_map.get(value)
 
-            # If there is no next state, or the next state isn't in
+            # If there is no next state, or the next state isn't in the list of
+            # available states, break.
             if not next_state or (next_state not in self._states):
                 break
 
@@ -85,7 +86,7 @@ class Machine(object):
 
     @classmethod
     def from_arguments(cls, states, alphabet, transitions, start, end):
-        """Main classmethod for building a machin.
+        """Main classmethod for building a machine.
 
         Arguments:
             states - a list of states within the machine.
